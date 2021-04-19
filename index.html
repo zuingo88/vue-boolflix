@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>zuingo88 - boolflix</title>
+    <!-- vue -->
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <!-- axios -->
+    <script src="https://cdn.jsdelivr.net/npm/axios@0.21.1/dist/axios.min.js"></script>
+    <!-- google fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <!-- font awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+      integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
+      crossorigin="anonymous"
+    />
+    <!-- my css -->
+    <link rel="stylesheet" href="css/main.css" />
+    <!-- my js -->
+    <script src="js/script.js"></script>
+  </head>
+  <body>
+    <div class="screen">
+      <div class="container flex_col">
+        <nav class="flex align_cen">
+          <div class="logo">Logo</div>
+          <div class="nav_menu flex space_bet align_cen">
+            <ul>
+              <li>Home</li>
+              <li>Serie TV</li>
+              <li>Film</li>
+              <li>Originali</li>
+              <li>Aggiunti di recente</li>
+              <li>La mia lista</li>
+            </ul>
+            <ul>
+              <li><i class="fas fa-search"></i></li>
+              <li><input type="text" placeholder="Cerca..." /></li>
+              <li><button>Vai</button></li>
+            </ul>
+          </div>
+        </nav>
+        <main>
+          <section id="first">
+            <div class="film flex">
+              <div class="card">
+                <img width="130px" height="150px" alt="" />
+                <h2>Titolo: </h2>
+                <h3>Titolo originale: </h3>
+                <p>Lingua: </p>
+                <p>Voto: </p>
+              </div>
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+  </body>
+</html>
