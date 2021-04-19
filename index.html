@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>zuingo88 - boolflix</title>
+    <title>zuingo88 - serielix</title>
     <!-- vue -->
     <script src="https://cdn.jsdelivr.net/npm/vue"></script>
     <!-- axios -->
@@ -28,7 +28,7 @@
     <script src="js/script.js"></script>
   </head>
   <body>
-    <div class="screen">
+    <div id="app" class="screen">
       <div class="container flex_col">
         <nav class="flex align_cen">
           <div class="logo">Logo</div>
@@ -43,20 +43,66 @@
             </ul>
             <ul>
               <li><i class="fas fa-search"></i></li>
-              <li><input type="text" placeholder="Cerca..." /></li>
-              <li><button>Vai</button></li>
+              <li>
+                <input
+                  v-model="search"
+                  @keyup.enter="multiSearch"
+                  type="text"
+                  placeholder="Cerca..."
+                />
+              </li>
+              <li><button @click="multiSearch">Vai</button></li>
             </ul>
           </div>
         </nav>
         <main>
           <section id="first">
-            <div class="film flex">
-              <div class="card">
-                <img width="130px" height="150px" alt="" />
-                <h2>Titolo: </h2>
-                <h3>Titolo originale: </h3>
-                <p>Lingua: </p>
-                <p>Voto: </p>
+            <div class="card_container flex_wrap">
+              <h2>Film</h2>
+              <div class="card" v-for="film in films">
+                <img
+                  v-if="film.poster_path == null"
+                  src="img/null.jpg"
+                  height="231px"
+                  width="154px"
+                  alt=""
+                />
+                <img v-else :src="imgBase + film.poster_path" alt="" />
+                <h2>{{ film.title }}</h2>
+                <h3>Titolo originale: {{ film.original_title }}</h3>
+                <p>Lingua: {{ film.original_language }}</p>
+                <span v-if="film.original_language == 'it'">
+                  <img height="10px" width="15px" src="img/it.webp" alt="" />
+                </span>
+                <span v-if="film.original_language == 'en'">
+                  <img height="10px" width="15px" src="img/uk.jpg" alt="" />
+                </span>
+                <p>Voto: {{ film.vote_average }}</p>
+              </div>
+            </div>
+          </section>
+          <section id="second">
+            <div class="card_container flex_wrap">
+              <h2>Serie TV</h2>
+              <div class="card" v-for="serie in series">
+                <img
+                  v-if="serie.poster_path == null"
+                  src="img/null.jpg"
+                  height="231px"
+                  width="154px"
+                  alt=""
+                />
+                <img v-else :src="imgBase + serie.poster_path" alt="" />
+                <h2>{{ serie.name }}</h2>
+                <h3>Titolo originale: {{ serie.name }}</h3>
+                <p>Lingua: {{ serie.original_language }}</p>
+                <span v-if="serie.original_language == 'it'">
+                  <img height="10px" width="15px" src="img/it.webp" alt="" />
+                </span>
+                <span v-if="serie.original_language == 'en'">
+                  <img height="10px" width="15px" src="img/uk.jpg" alt="" />
+                </span>
+                <p>Voto: {{ serie.vote_average }}</p>
               </div>
             </div>
           </section>

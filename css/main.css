@@ -23,6 +23,7 @@
 .container {
   height: 100%;
   width: 100%;
+  overflow: auto;
 }
 
 /* regole flex */
@@ -82,21 +83,27 @@ nav {
 }
 .nav_menu ul li {
   display: inline-block;
-  margin:10px;
+  margin: 10px;
 }
 
 /* first */
-#first {
-    margin-top: 10px;
-    padding: 25px 0;
-    background-color: ruby;
+section {
+  margin-top: 10px;
+  padding: 25px 0;
+  background-color: ruby;
 }
 
 /* card */
+.card_container {
+  margin: 20px;
+  padding: 10px;
+  background-color: darkred;
+}
+
 .card {
   min-height: 0;
-  width: 150px;
-  margin: 20px;
+  width: 174px;
+  margin: 15px 5px;
   padding: 10px;
   background-color: #3f3f3f;
   /* border: solid 1px #d3fbd8; */
