@@ -7,9 +7,17 @@ function initVue() {
       films: [],
       series: [],
       search: "",
-      imgBase: "https://image.tmdb.org/t/p/w154",
+      imgBase: "https://image.tmdb.org/t/p/w185",
+      hiddenInput: "true",
+      hidden: "true,",
     },
     methods: {
+      showInput: function () {
+        this.hiddenInput = !this.hiddenInput;
+      },
+      showSearched: function () {
+        this.hidden = !this.hidden;
+      },
       multiSearch: function () {
         if (this.search) {
           axios
@@ -32,6 +40,7 @@ function initVue() {
                   this.series.push(element);
                 }
               }
+              this.showSearched();
               this.search = [];
             })
             .catch(() => console.log("error"));
