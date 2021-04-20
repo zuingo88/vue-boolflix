@@ -151,7 +151,7 @@ button.start {
 section {
   /* margin-top: 10px; */
   padding: 5px;
-  background-color: ruby;
+  /* background-color: ruby; */
 }
 
 /* card */
@@ -180,6 +180,7 @@ section {
   bottom: 0;
   left: 0;
   background-color: black;
+  overflow: auto;
   display: none;
 }
 

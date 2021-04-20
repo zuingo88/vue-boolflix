@@ -70,6 +70,7 @@
         </nav>
 
         <main>
+          <!-- film -->
           <section id="film" :class="{hidden: hidden}">
             <h2>Film</h2>
 
@@ -113,11 +114,11 @@
             </div>
           </section>
 
+          <!-- serie -->
           <section id="serie" :class="{hidden: hidden}">
             <h2>Serie TV</h2>
             <div class="card_container flex">
               <div class="card" v-for="serie in series">
-
                 <div class="poster">
                   <img
                     v-if="serie.poster_path == null"
@@ -151,6 +152,92 @@
                     ></i>
                   </p>
                   <p>{{ serie.overview }}</p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- film tendenza -->
+          <section id="trending">
+            <h2>Film di tendenza ora</h2>
+            <div class="card_container flex">
+              <div class="card" v-for="elem in trendingFilm">
+                <div class="poster">
+                  <img
+                    v-if="elem.poster_path == null"
+                    src="img/null.jpg"
+                    height="278px"
+                    width="185px"
+                    alt=""
+                  />
+                  <img v-else :src="imgBase + elem.poster_path" alt="" />
+                </div>
+
+                <div class="description">
+                  <h2>{{ elem.title }}</h2>
+                  <h3>Titolo originale: {{ elem.title }}</h3>
+                  <p>Lingua: {{ elem.original_language }}</p>
+                  <span v-if="elem.original_language == 'it'">
+                    <img height="10px" width="15px" src="img/it.webp" alt="" />
+                  </span>
+                  <span v-if="elem.original_language == 'en'">
+                    <img height="10px" width="15px" src="img/uk.jpg" alt="" />
+                  </span>
+                  <p>
+                    Voto:
+                    <i
+                      v-for="fullStars in voteToFive(elem.vote_average)"
+                      class="fas fa-star"
+                    ></i>
+                    <i
+                      v-for="emptyStars in (5 - voteToFive(elem.vote_average))"
+                      class="far fa-star"
+                    ></i>
+                  </p>
+                  <p>{{ elem.overview }}</p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- novità -->
+          <section id="last">
+            <h2>Serie TV di tendenza ora</h2>
+            <div class="card_container flex">
+              <div class="card" v-for="elem in trendingTv">
+                <div class="poster">
+                  <img
+                    v-if="elem.poster_path == null"
+                    src="img/null.jpg"
+                    height="278px"
+                    width="185px"
+                    alt=""
+                  />
+                  <img v-else :src="imgBase + elem.poster_path" alt="" />
+                </div>
+
+                <div class="description">
+                  <h2>{{ elem.name }}</h2>
+                  <h3>Titolo originale: {{ elem.name }}</h3>
+                  <p>Lingua: {{ elem.original_language }}</p>
+                  <span v-if="elem.original_language == 'it'">
+                    <img height="10px" width="15px" src="img/it.webp" alt="" />
+                  </span>
+                  <span v-if="elem.original_language == 'en'">
+                    <img height="10px" width="15px" src="img/uk.jpg" alt="" />
+                  </span>
+                  <p>
+                    Voto:
+                    <i
+                      v-for="fullStars in voteToFive(elem.vote_average)"
+                      class="fas fa-star"
+                    ></i>
+                    <i
+                      v-for="emptyStars in (5 - voteToFive(elem.vote_average))"
+                      class="far fa-star"
+                    ></i>
+                  </p>
+                  <p>{{ elem.overview }}</p>
                 </div>
               </div>
             </div>
