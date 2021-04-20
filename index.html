@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>zuingo88 - serielix</title>
+    <title>zuingo88 - boolflix</title>
     <!-- vue -->
     <script src="https://cdn.jsdelivr.net/npm/vue"></script>
     <!-- axios -->
@@ -56,7 +56,7 @@
           </div>
         </nav>
         <main>
-          <section id="first">
+          <section id="first"  v-if="films">
             <div class="card_container flex_wrap">
               <h2>Film</h2>
               <div class="card" v-for="film in films">
@@ -77,11 +77,21 @@
                 <span v-if="film.original_language == 'en'">
                   <img height="10px" width="15px" src="img/uk.jpg" alt="" />
                 </span>
-                <p>Voto: {{ film.vote_average }}</p>
+                <p>
+                  Voto:
+                  <i
+                    v-for="fullStars in voteToFive(film.vote_average)"
+                    class="fas fa-star"
+                  ></i>
+                  <i
+                    v-for="emptyStars in (5 - voteToFive(film.vote_average))"
+                    class="far fa-star"
+                  ></i>
+                </p>
               </div>
             </div>
           </section>
-          <section id="second">
+          <section id="second"  v-if="series">
             <div class="card_container flex_wrap">
               <h2>Serie TV</h2>
               <div class="card" v-for="serie in series">
@@ -102,7 +112,17 @@
                 <span v-if="serie.original_language == 'en'">
                   <img height="10px" width="15px" src="img/uk.jpg" alt="" />
                 </span>
-                <p>Voto: {{ serie.vote_average }}</p>
+                <p>
+                  Voto:
+                  <i
+                    v-for="fullStars in voteToFive(serie.vote_average)"
+                    class="fas fa-star"
+                  ></i>
+                  <i
+                    v-for="emptyStars in (5 - voteToFive(serie.vote_average))"
+                    class="far fa-star"
+                  ></i>
+                </p>
               </div>
             </div>
           </section>

@@ -2,6 +2,7 @@ function initVue() {
   new Vue({
     el: "#app",
     data: {
+      myKey: "3ac305939dc6c020954c9ffffb48a55b",
       results: [],
       films: [],
       series: [],
@@ -14,7 +15,7 @@ function initVue() {
           axios
             .get("https://api.themoviedb.org/3/search/multi", {
               params: {
-                api_key: "3ac305939dc6c020954c9ffffb48a55b",
+                api_key: this.myKey,
                 query: this.search,
               },
             })
@@ -35,6 +36,9 @@ function initVue() {
             })
             .catch(() => console.log("error"));
         }
+      },
+      voteToFive: function (originalVote) {
+        return Math.round(originalVote / 2);
       },
     },
   });
