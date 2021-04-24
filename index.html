@@ -37,10 +37,10 @@
           <div class="nav_menu flex space_bet align_cen">
             <ul class="flex_center">
               <li @click="home">Home</li>
-              <li>Serie TV</li>
-              <li>Film</li>
-              <li>Originali</li>
-              <li>Aggiunti di recente</li>
+              <li @click="serie">Serie TV</li>
+              <li @click="film">Film</li>
+              <!-- <li>Originali</li> -->
+              <!-- <li>Aggiunti di recente</li> -->
               <li>Genere 
                 <select name="genre" id="">
                   <option v-for="" value=""></option>
@@ -75,7 +75,7 @@
 
         <main>
           <!-- film -->
-          <section id="film" :class="{hidden: hidden}">
+          <section id="film" :class="{hidden: hiddenSearch}">
             <h2>Film</h2>
 
             <div class="card_container flex">
@@ -119,7 +119,7 @@
           </section>
 
           <!-- serie -->
-          <section id="serie" :class="{hidden: hidden}">
+          <section id="serie" :class="{hidden: hiddenSearch}">
             <h2>Serie TV</h2>
             <div class="card_container flex">
               <div class="card" v-for="serie in series">
@@ -162,7 +162,7 @@
           </section>
 
           <!-- film tendenza -->
-          <section id="trendingFilm" :hidden="hiddenSection">
+          <section id="trendingFilm" :hidden="hiddenFilm">
             <h2>Film di tendenza ora</h2>
             <div class="card_container flex">
               <div class="card" v-for="elem in trendingFilm">
@@ -205,7 +205,7 @@
           </section>
 
           <!-- serie di tendenza -->
-          <section id="trendingTv" :hidden="hiddenSection">
+          <section id="trendingTv" :hidden="hiddenSerie">
             <h2>Serie TV di tendenza ora</h2>
             <div class="card_container flex">
               <div class="card" v-for="elem in trendingTv">
@@ -248,7 +248,7 @@
           </section>
 
           <!-- film novità -->
-          <section id="lastFilm" :hidden="hiddenSection">
+          <section id="lastFilm" :hidden="hiddenFilm">
             <h2>Film appena usciti</h2>
             <div class="card_container flex">
               <div class="card" v-for="elem in lastFilms">
@@ -291,7 +291,7 @@
           </section>
 
           <!-- serie appena uscite -->
-          <section id="lastTv" :hidden="hiddenSection">
+          <section id="lastTv" :hidden="hiddenSerie">
             <h2>Serie TV appena uscite</h2>
             <div class="card_container flex">
               <div class="card" v-for="elem in lastTv">
@@ -334,7 +334,7 @@
           </section>
 
           <!-- film più votati -->
-          <section id="topFilm" :hidden="hiddenSection">
+          <section id="topFilm" :hidden="hiddenFilm">
             <h2>Film più votati</h2>
             <div class="card_container flex">
               <div class="card" v-for="elem in topFilms">
@@ -376,9 +376,9 @@
             </div>
           </section>
 
-          <!-- film più votati -->
-          <section id="topTv" :hidden="hiddenSection">
-            <h2>Serie più votati</h2>
+          <!-- serie più votate -->
+          <section id="topTv" :hidden="hiddenSerie">
+            <h2>Serie più votate</h2>
             <div class="card_container flex">
               <div class="card" v-for="elem in topTv">
                 <div class="poster">
@@ -393,8 +393,94 @@
                 </div>
 
                 <div class="description">
+                  <h2>{{ elem.name }}</h2>
+                  <h3>Titolo originale: {{ elem.name }}</h3>
+                  <p>Lingua: {{ elem.original_language }}</p>
+                  <span v-if="elem.original_language == 'it'">
+                    <img height="10px" width="15px" src="img/it.webp" alt="" />
+                  </span>
+                  <span v-if="elem.original_language == 'en'">
+                    <img height="10px" width="15px" src="img/uk.jpg" alt="" />
+                  </span>
+                  <p>
+                    Voto:
+                    <i
+                      v-for="fullStars in voteToFive(elem.vote_average)"
+                      class="fas fa-star"
+                    ></i>
+                    <i
+                      v-for="emptyStars in (5 - voteToFive(elem.vote_average))"
+                      class="far fa-star"
+                    ></i>
+                  </p>
+                  <p>{{ elem.overview }}</p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- film popolari -->
+          <section id="popTv" :hidden="hiddenFilm">
+            <h2>Film popolari</h2>
+            <div class="card_container flex">
+              <div class="card" v-for="elem in popFilms">
+                <div class="poster">
+                  <img
+                    v-if="elem.poster_path == null"
+                    src="img/null.jpg"
+                    height="278px"
+                    width="185px"
+                    alt=""
+                  />
+                  <img v-else :src="imgBase + elem.poster_path" alt="" />
+                </div>
+
+                <div class="description">
                   <h2>{{ elem.title }}</h2>
                   <h3>Titolo originale: {{ elem.title }}</h3>
+                  <p>Lingua: {{ elem.original_language }}</p>
+                  <span v-if="elem.original_language == 'it'">
+                    <img height="10px" width="15px" src="img/it.webp" alt="" />
+                  </span>
+                  <span v-if="elem.original_language == 'en'">
+                    <img height="10px" width="15px" src="img/uk.jpg" alt="" />
+                  </span>
+                  <p>
+                    Voto:
+                    <i
+                      v-for="fullStars in voteToFive(elem.vote_average)"
+                      class="fas fa-star"
+                    ></i>
+                    <i
+                      v-for="emptyStars in (5 - voteToFive(elem.vote_average))"
+                      class="far fa-star"
+                    ></i>
+                  </p>
+                  <p>{{ elem.overview }}</p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- serie popolari -->
+          <section id="topTv" :hidden="hiddenSerie">
+            <h2>Serie popolari</h2>
+            <div class="card_container flex">
+              <div class="card" v-for="elem in popTv">
+                <div class="poster">
+                  <img
+                    v-if="elem.poster_path == null"
+                    src="img/null.jpg"
+                    height="278px"
+                    width="185px"
+                    alt=""
+                  />
+                  <img v-else :src="imgBase + elem.poster_path" alt="" />
+                </div>
+
+                <div class="description">
+                  <h2>{{ elem.name }}</h2>
+                  <h3>Titolo originale: {{ elem.name }}</h3>
                   <p>Lingua: {{ elem.original_language }}</p>
                   <span v-if="elem.original_language == 'it'">
                     <img height="10px" width="15px" src="img/it.webp" alt="" />

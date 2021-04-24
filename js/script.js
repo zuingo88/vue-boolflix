@@ -20,10 +20,14 @@ function initVue() {
       topFilms: [],
       topTv: [],
 
+      popFilms: [],
+      popTv: [],
+
       search: "",
       hiddenInput: true,
-      hidden: true,
-      hiddenSection: false,
+      hiddenSearch: true,
+      hiddenSerie: false,
+      hiddenFilm: false,
       hiddenInfo: true,
     },
 
@@ -37,17 +41,21 @@ function initVue() {
         this.hiddenInput = !this.hiddenInput;
       },
 
-      showSearched: function () {
-        this.hidden = !this.hidden;
-      },
+      // showSearched: function () {
+      //   this.hidden = !this.hidden;
+      // },
 
-      hiddenSections: function () {
-        this.hiddenSection = !this.hiddenSection;
-      },
+      // hiddenSerie: function () {
+      //   this.hiddenSection = !this.hiddenSection;
+      // },
 
-      showInfo: function () {
-        this.hiddenInfo = !this.hiddenInfo;
-      },
+      // hiddenFilm: function () {
+      //   this.hiddenSection = !this.hiddenSection;
+      // },
+
+      // showInfo: function () {
+      //   this.hiddenInfo = !this.hiddenInfo;
+      // },
 
       voteToFive: function (originalVote) {
         //trasformo il rating da 1-10 nel suo equivalente 1-5
@@ -80,9 +88,13 @@ function initVue() {
                 }
               }
               //rendo visibile il risultato della ricerca
-              this.showSearched();
+              // this.showSearched();
               //nascondo le altre sezioni
-              this.hiddenSections();
+              // this.hiddenSerie();
+              // this.hiddenFilm();
+              this.hiddenSearch = false;
+              this.hiddenSerie = true;
+              this.hiddenFilm = true;
               this.search = [];
             })
             .catch(() => console.log("error"));
@@ -110,29 +122,30 @@ function initVue() {
                 this.trendingTv.push(element);
               }
             }
-          });
+          })
+          .catch(() => console.log("error"));
       },
 
       //ultime produzioni
       //film
       lastfilm: function () {
         axios
-          .get("https://api.themoviedb.org/3/discover/movie", {
+          .get("https://api.themoviedb.org/3/movie/now_playing?", {
             params: {
               api_key: this.myKey,
               language: this.language,
-              sort_by: "release_date.desc",
             },
           })
 
           .then((response) => {
             this.lastFilms = response.data.results;
-          });
+          })
+          .catch(() => console.log("error"));
       },
       //serie
       lasttv: function () {
         axios
-          .get("https://api.themoviedb.org/3/discover/tv?", {
+          .get("https://api.themoviedb.org/3/tv/airing_today?", {
             params: {
               api_key: this.myKey,
               language: this.language,
@@ -142,7 +155,8 @@ function initVue() {
           .then((response) => {
             this.lastTv = response.data.results;
             console.log(this.lastTv);
-          });
+          })
+          .catch(() => console.log("error"));
       },
 
       //più votati
@@ -158,7 +172,8 @@ function initVue() {
 
           .then((response) => {
             this.topFilms = response.data.results;
-          });
+          })
+          .catch(() => console.log("error"));
       },
       //serie
       toptv: function () {
@@ -172,18 +187,67 @@ function initVue() {
 
           .then((response) => {
             this.topTv = response.data.results;
+          })
+          .catch(() => console.log("error"));
+      },
+
+      //popolari
+      //film
+      popfilm: function () {
+        axios
+          .get("https://api.themoviedb.org/3/movie/popular?", {
+            params: {
+              api_key: this.myKey,
+              language: this.language,
+              page: "1",
+            },
+          })
+
+          .then((response) => {
+            this.popFilms = response.data.results;
+          })
+          .catch(() => console.log("error"));
+      },
+      //serie
+      poptv: function () {
+        axios
+          .get("https://api.themoviedb.org/3/tv/popular?", {
+            params: {
+              api_key: this.myKey,
+              language: this.language,
+              page: "1",
+            },
+          })
+
+          .then((response) => {
+            this.popTv = response.data.results;
           });
       },
 
       home: function () {
-        this.hidden = true;
-        this.hiddenSection = false;
+        this.hiddenSearch = true;
+        this.hiddenSerie = false;
+        this.hiddenFilm = false;
         this.trending();
         this.lastfilm();
         this.lasttv();
         this.topfilm();
         this.toptv();
+        this.popfilm();
+        this.poptv();
       },
+
+      serie: function () {
+        this.hiddenSearch = true;
+        this.hiddenSerie = false;
+        this.hiddenFilm = true;
+      },
+
+      film: function () {
+        this.hiddenSearch = true;
+        this.hiddenSerie = true;
+        this.hiddenFilm = false;
+      }
     },
   });
 }
