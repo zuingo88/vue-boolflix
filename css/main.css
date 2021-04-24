@@ -204,3 +204,11 @@ section {
 .description p:last-child {
     font-size: 10px;
 }
+
+.features {
+    position: absolute;
+    width: 500px;
+    height: 400px;
+    background-color: black;
+    z-index: 999;
+}

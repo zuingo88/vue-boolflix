@@ -36,12 +36,16 @@
           </div>
           <div class="nav_menu flex space_bet align_cen">
             <ul class="flex_center">
-              <li>Home</li>
+              <li @click="home">Home</li>
               <li>Serie TV</li>
               <li>Film</li>
               <li>Originali</li>
               <li>Aggiunti di recente</li>
-              <li>La mia lista</li>
+              <li>Genere 
+                <select name="genre" id="">
+                  <option v-for="" value=""></option>
+                </select>
+              </li>
             </ul>
             <ul class="flex_center">
               <li class="search" @click="showInput">
@@ -158,7 +162,7 @@
           </section>
 
           <!-- film tendenza -->
-          <section id="trending">
+          <section id="trendingFilm" :hidden="hiddenSection">
             <h2>Film di tendenza ora</h2>
             <div class="card_container flex">
               <div class="card" v-for="elem in trendingFilm">
@@ -200,8 +204,8 @@
             </div>
           </section>
 
-          <!-- novità -->
-          <section id="last">
+          <!-- serie di tendenza -->
+          <section id="trendingTv" :hidden="hiddenSection">
             <h2>Serie TV di tendenza ora</h2>
             <div class="card_container flex">
               <div class="card" v-for="elem in trendingTv">
@@ -219,6 +223,178 @@
                 <div class="description">
                   <h2>{{ elem.name }}</h2>
                   <h3>Titolo originale: {{ elem.name }}</h3>
+                  <p>Lingua: {{ elem.original_language }}</p>
+                  <span v-if="elem.original_language == 'it'">
+                    <img height="10px" width="15px" src="img/it.webp" alt="" />
+                  </span>
+                  <span v-if="elem.original_language == 'en'">
+                    <img height="10px" width="15px" src="img/uk.jpg" alt="" />
+                  </span>
+                  <p>
+                    Voto:
+                    <i
+                      v-for="fullStars in voteToFive(elem.vote_average)"
+                      class="fas fa-star"
+                    ></i>
+                    <i
+                      v-for="emptyStars in (5 - voteToFive(elem.vote_average))"
+                      class="far fa-star"
+                    ></i>
+                  </p>
+                  <p>{{ elem.overview }}</p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- film novità -->
+          <section id="lastFilm" :hidden="hiddenSection">
+            <h2>Film appena usciti</h2>
+            <div class="card_container flex">
+              <div class="card" v-for="elem in lastFilms">
+                <div class="poster">
+                  <img
+                    v-if="elem.poster_path == null"
+                    src="img/null.jpg"
+                    height="278px"
+                    width="185px"
+                    alt=""
+                  />
+                  <img v-else :src="imgBase + elem.poster_path" alt="" />
+                </div>
+
+                <div class="description">
+                  <h2>{{ elem.title }}</h2>
+                  <h3>Titolo originale: {{ elem.title }}</h3>
+                  <p>Lingua: {{ elem.original_language }}</p>
+                  <span v-if="elem.original_language == 'it'">
+                    <img height="10px" width="15px" src="img/it.webp" alt="" />
+                  </span>
+                  <span v-if="elem.original_language == 'en'">
+                    <img height="10px" width="15px" src="img/uk.jpg" alt="" />
+                  </span>
+                  <p>
+                    Voto:
+                    <i
+                      v-for="fullStars in voteToFive(elem.vote_average)"
+                      class="fas fa-star"
+                    ></i>
+                    <i
+                      v-for="emptyStars in (5 - voteToFive(elem.vote_average))"
+                      class="far fa-star"
+                    ></i>
+                  </p>
+                  <p>{{ elem.overview }}</p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- serie appena uscite -->
+          <section id="lastTv" :hidden="hiddenSection">
+            <h2>Serie TV appena uscite</h2>
+            <div class="card_container flex">
+              <div class="card" v-for="elem in lastTv">
+                <div class="poster">
+                  <img
+                    v-if="elem.poster_path == null"
+                    src="img/null.jpg"
+                    height="278px"
+                    width="185px"
+                    alt=""
+                  />
+                  <img v-else :src="imgBase + elem.poster_path" alt="" />
+                </div>
+
+                <div class="description">
+                  <h2>{{ elem.name }}</h2>
+                  <h3>Titolo originale: {{ elem.name }}</h3>
+                  <p>Lingua: {{ elem.original_language }}</p>
+                  <span v-if="elem.original_language == 'it'">
+                    <img height="10px" width="15px" src="img/it.webp" alt="" />
+                  </span>
+                  <span v-if="elem.original_language == 'en'">
+                    <img height="10px" width="15px" src="img/uk.jpg" alt="" />
+                  </span>
+                  <p>
+                    Voto:
+                    <i
+                      v-for="fullStars in voteToFive(elem.vote_average)"
+                      class="fas fa-star"
+                    ></i>
+                    <i
+                      v-for="emptyStars in (5 - voteToFive(elem.vote_average))"
+                      class="far fa-star"
+                    ></i>
+                  </p>
+                  <p>{{ elem.overview }}</p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- film più votati -->
+          <section id="topFilm" :hidden="hiddenSection">
+            <h2>Film più votati</h2>
+            <div class="card_container flex">
+              <div class="card" v-for="elem in topFilms">
+                <div class="poster">
+                  <img
+                    v-if="elem.poster_path == null"
+                    src="img/null.jpg"
+                    height="278px"
+                    width="185px"
+                    alt=""
+                  />
+                  <img v-else :src="imgBase + elem.poster_path" alt="" />
+                </div>
+
+                <div class="description">
+                  <h2>{{ elem.title }}</h2>
+                  <h3>Titolo originale: {{ elem.title }}</h3>
+                  <p>Lingua: {{ elem.original_language }}</p>
+                  <span v-if="elem.original_language == 'it'">
+                    <img height="10px" width="15px" src="img/it.webp" alt="" />
+                  </span>
+                  <span v-if="elem.original_language == 'en'">
+                    <img height="10px" width="15px" src="img/uk.jpg" alt="" />
+                  </span>
+                  <p>
+                    Voto:
+                    <i
+                      v-for="fullStars in voteToFive(elem.vote_average)"
+                      class="fas fa-star"
+                    ></i>
+                    <i
+                      v-for="emptyStars in (5 - voteToFive(elem.vote_average))"
+                      class="far fa-star"
+                    ></i>
+                  </p>
+                  <p>{{ elem.overview }}</p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- film più votati -->
+          <section id="topTv" :hidden="hiddenSection">
+            <h2>Serie più votati</h2>
+            <div class="card_container flex">
+              <div class="card" v-for="elem in topTv">
+                <div class="poster">
+                  <img
+                    v-if="elem.poster_path == null"
+                    src="img/null.jpg"
+                    height="278px"
+                    width="185px"
+                    alt=""
+                  />
+                  <img v-else :src="imgBase + elem.poster_path" alt="" />
+                </div>
+
+                <div class="description">
+                  <h2>{{ elem.title }}</h2>
+                  <h3>Titolo originale: {{ elem.title }}</h3>
                   <p>Lingua: {{ elem.original_language }}</p>
                   <span v-if="elem.original_language == 'it'">
                     <img height="10px" width="15px" src="img/it.webp" alt="" />
