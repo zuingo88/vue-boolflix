@@ -116,7 +116,6 @@ nav {
 .nav_menu {
   height: 80px;
   flex-grow: 1;
-  /* width: 100%; */
 }
 
 .nav_menu ul li {
@@ -149,30 +148,24 @@ button.start {
 
 /* sections */
 section {
-  /* margin-top: 10px; */
   padding: 5px;
-  /* background-color: ruby; */
 }
 
 /* card */
 .card_container {
   margin: 10px;
-  /* padding: 10px; */
-  /* background-color: darkred; */
   min-width: 0;
   overflow-x: auto;
 }
 
 .card {
   position: relative;
-  /* min-height: 0; */
   width: 185px;
   margin: 0 3px;
-  /* background-color: #3f3f3f; */
-  /* border: solid 1px #d3fbd8; */
 }
 
-.card .description {
+.card .description,
+.card .info {
   position: absolute;
   padding: 10px;
   top: 0;
@@ -181,7 +174,16 @@ section {
   left: 0;
   background-color: black;
   overflow: auto;
+}
+
+.card .description {
   display: none;
+  
+  z-index: 950;
+}
+
+.card .info {
+  z-index: 999;
 }
 
 .card:hover .description {
@@ -196,7 +198,8 @@ section {
   margin-top: 10px;
 }
 
-.description p {
+.description p,
+.info p {
   margin-top: 5px;
   font-size: 14px;
 }

@@ -4,8 +4,9 @@ function initVue() {
     data: {
       myKey: "3ac305939dc6c020954c9ffffb48a55b",
       imgBase: "https://image.tmdb.org/t/p/w185",
-      language: "it-IT",
+      myLanguage: "it-IT",
 
+      search: "",
       results: [],
 
       films: [],
@@ -23,14 +24,21 @@ function initVue() {
       popFilms: [],
       popTv: [],
 
-      search: "",
       hiddenInput: true,
       hiddenSearch: true,
       hiddenSerie: false,
       hiddenFilm: false,
       hiddenInfo: true,
+
+      genres: [],
+      castRes: [],
+      castObj: {},
+      castObjs: [],
+
+      show: false,
     },
 
+    //carico la home all'avvio
     mounted: function () {
       this.home();
     },
@@ -40,22 +48,6 @@ function initVue() {
         //mostro o nascondo input di ricerca
         this.hiddenInput = !this.hiddenInput;
       },
-
-      // showSearched: function () {
-      //   this.hidden = !this.hidden;
-      // },
-
-      // hiddenSerie: function () {
-      //   this.hiddenSection = !this.hiddenSection;
-      // },
-
-      // hiddenFilm: function () {
-      //   this.hiddenSection = !this.hiddenSection;
-      // },
-
-      // showInfo: function () {
-      //   this.hiddenInfo = !this.hiddenInfo;
-      // },
 
       voteToFive: function (originalVote) {
         //trasformo il rating da 1-10 nel suo equivalente 1-5
@@ -69,7 +61,7 @@ function initVue() {
             .get("https://api.themoviedb.org/3/search/multi", {
               params: {
                 api_key: this.myKey,
-                language: this.language,
+                language: this.myLanguage,
                 query: this.search,
               },
             })
@@ -88,15 +80,14 @@ function initVue() {
                 }
               }
               //rendo visibile il risultato della ricerca
-              // this.showSearched();
-              //nascondo le altre sezioni
-              // this.hiddenSerie();
-              // this.hiddenFilm();
               this.hiddenSearch = false;
+
+              //nascondo le altre sezioni
               this.hiddenSerie = true;
               this.hiddenFilm = true;
               this.search = [];
             })
+
             .catch(() => console.log("error"));
         }
       },
@@ -107,7 +98,7 @@ function initVue() {
           .get("https://api.themoviedb.org/3/trending/all/week?", {
             params: {
               api_key: this.myKey,
-              language: this.language,
+              language: this.myLanguage,
             },
           })
 
@@ -116,6 +107,7 @@ function initVue() {
 
             for (let i = 0; i < this.results.length; i++) {
               const element = this.results[i];
+
               if (element.media_type == "movie") {
                 this.trendingFilm.push(element);
               } else if (element.media_type == "tv") {
@@ -123,6 +115,7 @@ function initVue() {
               }
             }
           })
+
           .catch(() => console.log("error"));
       },
 
@@ -133,13 +126,14 @@ function initVue() {
           .get("https://api.themoviedb.org/3/movie/now_playing?", {
             params: {
               api_key: this.myKey,
-              language: this.language,
+              language: this.myLanguage,
             },
           })
 
           .then((response) => {
             this.lastFilms = response.data.results;
           })
+
           .catch(() => console.log("error"));
       },
       //serie
@@ -148,14 +142,14 @@ function initVue() {
           .get("https://api.themoviedb.org/3/tv/airing_today?", {
             params: {
               api_key: this.myKey,
-              language: this.language,
+              language: this.myLanguage,
             },
           })
 
           .then((response) => {
             this.lastTv = response.data.results;
-            console.log(this.lastTv);
           })
+
           .catch(() => console.log("error"));
       },
 
@@ -166,13 +160,14 @@ function initVue() {
           .get("https://api.themoviedb.org/3/movie/top_rated?", {
             params: {
               api_key: this.myKey,
-              language: this.language,
+              language: this.myLanguage,
             },
           })
 
           .then((response) => {
             this.topFilms = response.data.results;
           })
+
           .catch(() => console.log("error"));
       },
       //serie
@@ -181,13 +176,14 @@ function initVue() {
           .get("https://api.themoviedb.org/3/tv/top_rated?", {
             params: {
               api_key: this.myKey,
-              language: this.language,
+              language: this.myLanguage,
             },
           })
 
           .then((response) => {
             this.topTv = response.data.results;
           })
+
           .catch(() => console.log("error"));
       },
 
@@ -198,7 +194,7 @@ function initVue() {
           .get("https://api.themoviedb.org/3/movie/popular?", {
             params: {
               api_key: this.myKey,
-              language: this.language,
+              language: this.myLanguage,
               page: "1",
             },
           })
@@ -206,6 +202,7 @@ function initVue() {
           .then((response) => {
             this.popFilms = response.data.results;
           })
+
           .catch(() => console.log("error"));
       },
       //serie
@@ -214,16 +211,19 @@ function initVue() {
           .get("https://api.themoviedb.org/3/tv/popular?", {
             params: {
               api_key: this.myKey,
-              language: this.language,
+              language: this.myLanguage,
               page: "1",
             },
           })
 
           .then((response) => {
             this.popTv = response.data.results;
-          });
+          })
+
+          .catch(() => console.log("error"));
       },
 
+      //mostro la home
       home: function () {
         this.hiddenSearch = true;
         this.hiddenSerie = false;
@@ -235,19 +235,92 @@ function initVue() {
         this.toptv();
         this.popfilm();
         this.poptv();
+        this.getGenres();
       },
 
+      //mostro serie
       serie: function () {
         this.hiddenSearch = true;
         this.hiddenSerie = false;
         this.hiddenFilm = true;
       },
 
+      //mostro film
       film: function () {
         this.hiddenSearch = true;
         this.hiddenSerie = true;
         this.hiddenFilm = false;
-      }
+      },
+
+      //prendo i generi dei film
+      getGenres: function () {
+        axios
+          .get("https://api.themoviedb.org/3/genre/movie/list", {
+            params: {
+              api_key: this.myKey,
+              language: this.myLanguage,
+              page: "1",
+            },
+          })
+
+          .then((response) => {
+            this.results = response.data.genres;
+
+            for (let i = 0; i < this.results.length; i++) {
+              const genre = this.results[i].name;
+              this.genres.push(genre);
+            }
+          })
+
+          .catch(() => console.log("error"));
+      },
+
+      //mostro cast
+      getInfo: function (id) {
+        // this.hiddenInfo = !this.hiddenInfo;
+        this;
+        this.castRes = [];
+        axios
+          .get("https://api.themoviedb.org/3/movie/" + id + "/credits", {
+            params: {
+              api_key: this.myKey,
+              language: this.myLanguage,
+            },
+          })
+
+          .then((response) => {
+            this.castRes = response.data.cast;
+
+            this.castObjs = [];
+            this.actors = [];
+            this.characters = [];
+
+            // this.hiddenInfo = !this.hiddenInfo;
+
+            for (let i = 0; i < this.castRes.length; i++) {
+              this.castObj = {};
+
+              const castElement = this.castRes[i];
+              const actor = castElement.name;
+              const character = castElement.character;
+
+              this.castObj.actor = actor;
+              this.castObj.character = character;
+              this.castObjs.push(this.castObj);
+
+              this.castObjs.splice(5);
+            }
+
+            const divInfo = document.getElementsByClassName("info");
+
+            for (let i = 0; i < divInfo.length; i++) {
+              const element = divInfo[i];
+
+              element.style.display = "none";
+            }
+            document.getElementById(id).style.display = "block";
+          });
+      },
     },
   });
 }

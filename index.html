@@ -41,9 +41,13 @@
               <li @click="film">Film</li>
               <!-- <li>Originali</li> -->
               <!-- <li>Aggiunti di recente</li> -->
-              <li>Genere 
+              <li>
+                Genere
                 <select name="genre" id="">
-                  <option v-for="" value=""></option>
+                  <option value="scegli">Scegli</option>
+                  <option v-for="genre in genres" value="genre">
+                    {{ genre }}
+                  </option>
                 </select>
               </li>
             </ul>
@@ -78,7 +82,7 @@
           <section id="film" :class="{hidden: hiddenSearch}">
             <h2>Film</h2>
 
-            <div class="card_container flex">
+            <div class="card_container flex_wrap">
               <div class="card" v-for="film in films">
                 <div class="poster">
                   <img
@@ -121,7 +125,7 @@
           <!-- serie -->
           <section id="serie" :class="{hidden: hiddenSearch}">
             <h2>Serie TV</h2>
-            <div class="card_container flex">
+            <div class="card_container flex_wrap">
               <div class="card" v-for="serie in series">
                 <div class="poster">
                   <img
@@ -165,7 +169,11 @@
           <section id="trendingFilm" :hidden="hiddenFilm">
             <h2>Film di tendenza ora</h2>
             <div class="card_container flex">
-              <div class="card" v-for="elem in trendingFilm">
+              <div
+                class="card"
+                v-for="elem in trendingFilm"
+                @click="getInfo(elem.id)"
+              >
                 <div class="poster">
                   <img
                     v-if="elem.poster_path == null"
@@ -199,6 +207,14 @@
                     ></i>
                   </p>
                   <p>{{ elem.overview }}</p>
+                </div>
+
+                <div class="info" :id="elem.id" :hidden="hiddenInfo">
+                  <h2>Cast</h2>
+                  <p v-if="elem.id" v-for="x in castObjs">
+                    <span>{{ x.actor }}: </span>
+                    <span>{{ x.character }}</span>
+                  </p>
                 </div>
               </div>
             </div>
