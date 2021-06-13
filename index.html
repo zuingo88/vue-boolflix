@@ -35,15 +35,6 @@
             <li @click="home">Home</li>
             <li @click="serie">Serie TV</li>
             <li @click="film">Film</li>
-            <li>
-              Genere
-              <select name="genre" id="">
-                <option value="scegli">Scegli</option>
-                <option v-for="genre in genres" value="genre">
-                  {{ genre }}
-                </option>
-              </select>
-            </li>
           </ul>
           <ul class="flex_center">
             <li class="search" @click="showInput">
@@ -68,7 +59,7 @@
           <h2>Film</h2>
 
           <div class="card_container flex_wrap">
-            <div class="card" v-for="film in films">
+            <div class="card" v-for="film in films" @click="getInfo(elem.id)">
               <div class="poster">
                 <img v-if="film.poster_path == null" src="img/null.jpg" height="278px" width="185px" alt="" />
                 <img v-else :src="imgBase + film.poster_path" alt="" />
@@ -91,6 +82,15 @@
                 </p>
                 <p>{{ film.overview }}</p>
               </div>
+
+              <div class="info" v-if="elem.id == varId" :id="elem.id">
+                <h2>Cast</h2>
+                <p v-if="elem.id" v-for="x in castObjs">
+                  <span>{{ x.actor }}: </span>
+                  <span>{{ x.character }}</span>
+                </p>
+              </div>
+
             </div>
           </div>
         </section>
@@ -99,7 +99,7 @@
         <section id="serie" :class="{hidden: hiddenSearch}">
           <h2>Serie TV</h2>
           <div class="card_container flex_wrap">
-            <div class="card" v-for="serie in series">
+            <div class="card" v-for="serie in series" @click="getInfo(elem.id)">
               <div class="poster">
                 <img v-if="serie.poster_path == null" src="img/null.jpg" height="278px" width="185px" alt="" />
                 <img v-else :src="imgBase + serie.poster_path" alt="" />
@@ -122,6 +122,15 @@
                 </p>
                 <p>{{ serie.overview }}</p>
               </div>
+
+              <div class="info" v-if="elem.id == varId" :id="elem.id">
+                <h2>Cast</h2>
+                <p v-if="elem.id" v-for="x in castObjs">
+                  <span>{{ x.actor }}: </span>
+                  <span>{{ x.character }}</span>
+                </p>
+              </div>
+
             </div>
           </div>
         </section>
@@ -169,7 +178,7 @@
         <section id="trendingTv" :hidden="hiddenSerie">
           <h2>Serie TV di tendenza ora</h2>
           <div class="card_container flex_wrap">
-            <div class="card" v-for="elem in trendingTv">
+            <div class="card" v-for="elem in trendingTv" @click="getInfo(elem.id)">
               <div class="poster">
                 <img v-if="elem.poster_path == null" src="img/null.jpg" height="278px" width="185px" alt="" />
                 <img v-else :src="imgBase + elem.poster_path" alt="" />
@@ -192,6 +201,15 @@
                 </p>
                 <p>{{ elem.overview }}</p>
               </div>
+
+              <div class="info" v-if="elem.id == varId" :id="elem.id">
+                <h2>Cast</h2>
+                <p v-if="elem.id" v-for="x in castObjs">
+                  <span>{{ x.actor }}: </span>
+                  <span>{{ x.character }}</span>
+                </p>
+              </div>
+
             </div>
           </div>
         </section>
@@ -200,7 +218,7 @@
         <section id="lastFilm" :hidden="hiddenFilm">
           <h2>Film appena usciti</h2>
           <div class="card_container flex_wrap">
-            <div class="card" v-for="elem in lastFilms">
+            <div class="card" v-for="elem in lastFilms" @click="getInfo(elem.id)">
               <div class="poster">
                 <img v-if="elem.poster_path == null" src="img/null.jpg" height="278px" width="185px" alt="" />
                 <img v-else :src="imgBase + elem.poster_path" alt="" />
@@ -223,6 +241,15 @@
                 </p>
                 <p>{{ elem.overview }}</p>
               </div>
+
+              <div class="info" v-if="elem.id == varId" :id="elem.id">
+                <h2>Cast</h2>
+                <p v-if="elem.id" v-for="x in castObjs">
+                  <span>{{ x.actor }}: </span>
+                  <span>{{ x.character }}</span>
+                </p>
+              </div>
+
             </div>
           </div>
         </section>
@@ -231,7 +258,7 @@
         <section id="lastTv" :hidden="hiddenSerie">
           <h2>Serie TV appena uscite</h2>
           <div class="card_container flex_wrap">
-            <div class="card" v-for="elem in lastTv">
+            <div class="card" v-for="elem in lastTv" @click="getInfo(elem.id)">
               <div class="poster">
                 <img v-if="elem.poster_path == null" src="img/null.jpg" height="278px" width="185px" alt="" />
                 <img v-else :src="imgBase + elem.poster_path" alt="" />
@@ -254,6 +281,15 @@
                 </p>
                 <p>{{ elem.overview }}</p>
               </div>
+
+              <div class="info" v-if="elem.id == varId" :id="elem.id">
+                <h2>Cast</h2>
+                <p v-if="elem.id" v-for="x in castObjs">
+                  <span>{{ x.actor }}: </span>
+                  <span>{{ x.character }}</span>
+                </p>
+              </div>
+
             </div>
           </div>
         </section>
@@ -262,7 +298,7 @@
         <section id="topFilm" :hidden="hiddenFilm">
           <h2>Film più votati</h2>
           <div class="card_container flex_wrap">
-            <div class="card" v-for="elem in topFilms">
+            <div class="card" v-for="elem in topFilms" @click="getInfo(elem.id)">
               <div class="poster">
                 <img v-if="elem.poster_path == null" src="img/null.jpg" height="278px" width="185px" alt="" />
                 <img v-else :src="imgBase + elem.poster_path" alt="" />
@@ -285,6 +321,15 @@
                 </p>
                 <p>{{ elem.overview }}</p>
               </div>
+
+              <div class="info" v-if="elem.id == varId" :id="elem.id">
+                <h2>Cast</h2>
+                <p v-if="elem.id" v-for="x in castObjs">
+                  <span>{{ x.actor }}: </span>
+                  <span>{{ x.character }}</span>
+                </p>
+              </div>
+
             </div>
           </div>
         </section>
@@ -293,7 +338,7 @@
         <section id="topTv" :hidden="hiddenSerie">
           <h2>Serie più votate</h2>
           <div class="card_container flex_wrap">
-            <div class="card" v-for="elem in topTv">
+            <div class="card" v-for="elem in topTv" @click="getInfo(elem.id)">
               <div class="poster">
                 <img v-if="elem.poster_path == null" src="img/null.jpg" height="278px" width="185px" alt="" />
                 <img v-else :src="imgBase + elem.poster_path" alt="" />
@@ -316,6 +361,15 @@
                 </p>
                 <p>{{ elem.overview }}</p>
               </div>
+
+              <div class="info" v-if="elem.id == varId" :id="elem.id">
+                <h2>Cast</h2>
+                <p v-if="elem.id" v-for="x in castObjs">
+                  <span>{{ x.actor }}: </span>
+                  <span>{{ x.character }}</span>
+                </p>
+              </div>
+
             </div>
           </div>
         </section>
@@ -324,7 +378,7 @@
         <section id="popTv" :hidden="hiddenFilm">
           <h2>Film popolari</h2>
           <div class="card_container flex_wrap">
-            <div class="card" v-for="elem in popFilms">
+            <div class="card" v-for="elem in popFilms" @click="getInfo(elem.id)">
               <div class="poster">
                 <img v-if="elem.poster_path == null" src="img/null.jpg" height="278px" width="185px" alt="" />
                 <img v-else :src="imgBase + elem.poster_path" alt="" />
@@ -347,6 +401,15 @@
                 </p>
                 <p>{{ elem.overview }}</p>
               </div>
+
+              <div class="info" v-if="elem.id == varId" :id="elem.id">
+                <h2>Cast</h2>
+                <p v-if="elem.id" v-for="x in castObjs">
+                  <span>{{ x.actor }}: </span>
+                  <span>{{ x.character }}</span>
+                </p>
+              </div>
+
             </div>
           </div>
         </section>
@@ -355,7 +418,7 @@
         <section id="topTv" :hidden="hiddenSerie">
           <h2>Serie popolari</h2>
           <div class="card_container flex_wrap">
-            <div class="card" v-for="elem in popTv">
+            <div class="card" v-for="elem in popTv" @click="getInfo(elem.id)">
               <div class="poster">
                 <img v-if="elem.poster_path == null" src="img/null.jpg" height="278px" width="185px" alt="" />
                 <img v-else :src="imgBase + elem.poster_path" alt="" />
@@ -378,6 +441,15 @@
                 </p>
                 <p>{{ elem.overview }}</p>
               </div>
+
+              <div class="info" v-if="elem.id == varId" :id="elem.id">
+                <h2>Cast</h2>
+                <p v-if="elem.id" v-for="x in castObjs">
+                  <span>{{ x.actor }}: </span>
+                  <span>{{ x.character }}</span>
+                </p>
+              </div>
+
             </div>
           </div>
         </section>
