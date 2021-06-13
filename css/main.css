@@ -154,14 +154,16 @@ section {
 /* card */
 .card_container {
   margin: 10px;
+  width: 100%;
   min-width: 0;
-  overflow-x: auto;
 }
 
 .card {
   position: relative;
+  height: 278px;
   width: 185px;
-  margin: 0 3px;
+  margin: 3px;
+  overflow: hidden;
 }
 
 .card .description,
@@ -187,7 +189,7 @@ section {
 }
 
 .card:hover .description {
-    display: block;
+  display: block;
 }
 
 .card img {
