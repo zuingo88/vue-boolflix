@@ -5,20 +5,45 @@
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>zuingo88 - boolflix</title>
+
   <!-- vue -->
   <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+
   <!-- axios -->
   <script src="https://cdn.jsdelivr.net/npm/axios@0.21.1/dist/axios.min.js"></script>
+
+  <!-- jquery -->
+  <!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script> -->
+
+  <!-- slick-slider -->
+  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"
+    integrity="sha512-XtmMtDEcNz2j7ekrtHvOVR4iwwaD6o/FUJe6+Zq+HgcCsk3kj4uSQQR8weQ2QVj1o0Pk6PwYLohm206ZzNfubg=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
+
   <!-- google fonts -->
   <link rel="preconnect" href="https://fonts.gstatic.com" />
   <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;700&display=swap" rel="stylesheet" />
+
   <!-- font awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
     integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
     crossorigin="anonymous" />
+
+  <!-- slick-slider  -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.css"
+    integrity="sha512-6lLUdeQ5uheMFbWm3CP271l14RsX1xtx+J5x2yeIDkkiBpeVTNhTqijME7GgRKKi6hCqovwCoBTlRBEC20M8Mg=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.css"
+    integrity="sha512-wR4oNhLBHf7smjy0K4oqzdWumd+r5/+6QO/vDda76MW5iug4PT7v86FoEkySIJft3XA0Ae6axhIvHrqwm793Nw=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <title>zuingo88 - boolflix</title>
+
   <!-- my css -->
   <link rel="stylesheet" href="css/main.css" />
+
   <!-- my js -->
   <script src="js/script.js"></script>
 </head>
@@ -31,11 +56,15 @@
           <img src="img/boolflix.png" alt="" />
         </div>
         <div class="nav_menu flex space_bet align_cen">
+
+          <!-- nav menu -->
           <ul class="flex_center">
             <li @click="home">Home</li>
             <li @click="serie">Serie TV</li>
             <li @click="film">Film</li>
           </ul>
+
+          <!-- search -->
           <ul class="flex_center">
             <li class="search" @click="showInput">
               <i class="fas fa-search"></i>
@@ -54,6 +83,7 @@
       </nav>
 
       <main>
+
         <!-- film -->
         <section id="film" :class="{hidden: hiddenSearch}">
           <h2>Film</h2>
@@ -134,6 +164,75 @@
             </div>
           </div>
         </section>
+
+
+
+
+
+
+
+        <!-- film tendenza prova -->
+        <section id="trendingFilm" :hidden="hiddenFilm">
+          <h2>Film di tendenza ora</h2>
+          <div class="card_container">
+
+            <!-- autoplay -->
+            <div class="multiple-items">
+
+              <!-- card film/serie -->
+              <div class="card" v-for="elem in trendingFilm">
+                <div class="poster">
+                  <img v-if="elem.poster_path == null" src="img/null.jpg" alt="Nessuna immagine disponibile" />
+                  <img v-else :src="imgBase + elem.poster_path" alt="poster" />
+                </div>
+
+                <!-- descrizione visibile all'hover -->
+                <div class="description">
+                  <h2>{{ elem.title }}</h2>
+                  <h3 class="cast" @click="getInfo(elem.id)">Guarda il Cast <i class="fas fa-users"></i></h3>
+                  <h3>Titolo originale: {{ elem.title }}</h3>
+                  <p>Lingua: {{ elem.original_language }}</p>
+                  <span v-if="elem.original_language == 'it'">
+                    <img height="10px" width="15px" src="img/it.webp" alt="" />
+                  </span>
+                  <span v-if="elem.original_language == 'en'">
+                    <img height="10px" width="15px" src="img/uk.jpg" alt="" />
+                  </span>
+                  <p>
+                    Voto:
+                    <i v-for="fullStars in voteToFive(elem.vote_average)" class="fas fa-star"></i>
+                    <i v-for="emptyStars in (5 - voteToFive(elem.vote_average))" class="far fa-star"></i>
+                  </p>
+                  <p>{{ elem.overview }}</p>
+                </div>
+
+                <!-- cast visibile al click -->
+                <div class="info" v-if="elem.id == varId" :id="elem.id">
+                  <i class="far fa-times-circle" @click="closeCast()"></i>
+                  <h2>Cast</h2>
+                  <p v-if="elem.id" v-for="x in castObjs">
+                    <span>{{ x.actor }}: </span>
+                    <span>{{ x.character }}</span>
+                  </p>
+                </div>
+              </div>
+              <!-- fine card film/serie -->
+
+            </div>
+            <!-- fine autoplay -->
+
+          </div>
+        </section>
+
+
+
+
+
+
+
+
+
+
 
         <!-- film tendenza -->
         <section id="trendingFilm" :hidden="hiddenFilm">
@@ -456,6 +555,54 @@
       </main>
     </div>
   </div>
+
+
+  <!-- jquery -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+  <!-- slick-slider -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"
+    integrity="sha512-XtmMtDEcNz2j7ekrtHvOVR4iwwaD6o/FUJe6+Zq+HgcCsk3kj4uSQQR8weQ2QVj1o0Pk6PwYLohm206ZzNfubg=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+  <!-- my slick-slider -->
+  <script type="text/javascript">
+    $(document).ready(function () {
+      $('.multiple-items').slick({
+        infinite: true,
+        slidesToShow: 8,
+        slidesToScroll: 1,
+        responsive: [
+          {
+            breakpoint: 1680,
+            settings: {
+              slidesToShow: 7,
+            }
+          },
+          {
+            breakpoint: 1450,
+            settings: {
+              slidesToShow: 6
+            }
+          },
+          {
+            breakpoint: 1255,
+            settings: {
+              slidesToShow: 5
+            }
+          },
+          {
+            breakpoint: 1070,
+            settings: {
+              slidesToShow: 4
+            }
+          }
+        ]
+      });
+    });
+  </script>
+
 </body>
 
 </html>

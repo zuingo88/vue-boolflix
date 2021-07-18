@@ -100,7 +100,7 @@ h3 {
 
 /* nav */
 nav {
-    width: 100%;
+  width: 100%;
   background-color: #000000;
   padding: 10px 20px;
 }
@@ -154,8 +154,13 @@ section {
 /* card */
 .card_container {
   margin: 10px;
-  width: 100%;
+  /* width: 100%; */
   min-width: 0;
+}
+
+.multiple-items {
+  margin: auto;
+  width: 95%;
 }
 
 .card {
@@ -166,6 +171,11 @@ section {
   overflow: hidden;
 }
 
+.card .poster {
+  height: 278px;
+  width: 185px;
+}
+
 .card .description,
 .card .info {
   position: absolute;
@@ -174,18 +184,42 @@ section {
   right: 0;
   bottom: 0;
   left: 0;
+  width: 185px;
   background-color: black;
   overflow: auto;
 }
 
 .card .description {
   display: none;
-  
   z-index: 950;
+}
+
+.card .description .cast {
+  display: inline-block;
+  padding: 3px;
+  background-color: black;
+  border: solid 1px #f40612;  
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.card .description .cast:hover {
+  background-color: #f40612;
+  border: solid 1px black;
 }
 
 .card .info {
   z-index: 999;
+}
+
+.card .info .far.fa-times-circle {
+  width: 100%;
+  text-align: right;
+  cursor: pointer;
+}
+
+.card .info .far.fa-times-circle:hover {
+  color: #f40612;
 }
 
 .card:hover .description {
@@ -207,13 +241,13 @@ section {
 }
 
 .description p:last-child {
-    font-size: 10px;
+  font-size: 10px;
 }
 
 .features {
-    position: absolute;
-    width: 500px;
-    height: 400px;
-    background-color: black;
-    z-index: 999;
+  position: absolute;
+  width: 500px;
+  height: 400px;
+  background-color: black;
+  z-index: 999;
 }

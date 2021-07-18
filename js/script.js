@@ -1,3 +1,5 @@
+//require('slick-carousel');
+
 function initVue() {
   new Vue({
 
@@ -282,7 +284,7 @@ function initVue() {
       },
 
       //mostro cast
-      getInfo: function (id) {
+      showCast: function (id) {
         this.varId = id;
         this.castRes = [];
         axios
@@ -317,6 +319,11 @@ function initVue() {
             }
           });
       },
+
+      //nascondo cast
+      closeCast: function() {
+        this.varId = "";
+      }
     },
   });
 }
